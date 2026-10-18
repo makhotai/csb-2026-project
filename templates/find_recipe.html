@@ -1,0 +1,44 @@
+{% extends "layout.html" %}
+
+{% block title %}Search recipe{% endblock %}
+
+{% block content %}
+
+<div class="content">
+    <h2>search recipe</h2>
+
+    <form action="/find_recipe" method="get">
+        <p>
+            <b><label for="query_word">by word</label>:</b>
+            <input type="text" name="query_word" value="{{ query_word }}" id="query_word" size="30" maxlength="30"/><br>
+        </p>
+
+        <p>
+            <b><label for="query_class">by category</label>:</b>
+            <select name="query_class" id="query_class">
+            <option value="">(all categories)</option>
+            {% for class in classes %}
+                <option value="{{ class }}" {% if class == query_class %}selected{% endif %}>
+                    {{ class }}
+                </option>
+            {% endfor %}
+            </select>
+        </p>
+
+        <input type="submit" value="search">
+
+        {% if query_word or query_class%}
+            <h3>the search results </h3>
+            {% if results == [] %}
+                <p>nothing has been found </p>
+            {% endif %}
+            <ul>
+                {% for recipe in results %}
+                    <li><a href="/recipe/{{ recipe.id }}">{{ recipe.title }}</a></li>
+                {% endfor %}
+            </ul>
+        {% endif %}
+    </form>
+</div>
+
+{% endblock %}
