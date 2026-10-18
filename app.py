@@ -158,8 +158,12 @@ def edit_recipe(recipe_id):
     recipe = recipes.get_recipe(recipe_id)
     if not recipe:
         abort(404)
-    if recipe["user_id"] != session["user_id"]:
-        abort(403)
+
+    # A01 broken access control:
+    # there is no ownership so another logged in user can open this edit form directly
+    # FIX:
+    # if recipe["user_id"] != session["user_id"]:
+    #     abort(403)
 
     all_classes = recipes.get_class()
     selected_classes = recipes.get_classes(recipe_id)
@@ -176,8 +180,12 @@ def update_recipe():
     recipe = recipes.get_recipe(recipe_id)
     if not recipe:
         abort(404)
-    if recipe["user_id"] != session["user_id"]:
-        abort(403)
+
+    # A01 broken access control:
+    # the backend does not verify that the logged in user owns this recipe before updating it
+    # FIX:
+    # if recipe["user_id"] != session["user_id"]:
+    #    abort(403)
 
     recipe_id = request.form["recipe_id"]
     title = request.form["title"]
