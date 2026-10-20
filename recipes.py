@@ -72,16 +72,36 @@ def remove_recipe(recipe_id):
     db.execute(sql, [recipe_id])
 
 def find_recipes(query_word, query_class):
-    sql = """SELECT DISTINCT recipes.id, recipes.title,
+    # A03 — injection: 
+    # user input is inserted directly into the SQL statement 
+
+    # this search term can change the WHERE part and 
+    # so it would return recipes that do not match the requested search
+
+    sql = f"""SELECT DISTINCT recipes.id, recipes.title,
              users.id AS user_id, users.username
              FROM recipes
              JOIN users ON recipes.user_id = users.id
              LEFT JOIN recipe_classes ON recipe_classes.recipe_id = recipes.id
-             WHERE (recipes.title LIKE ? OR recipes.description_r LIKE ?)
-             AND (? = '' OR recipe_classes.title = ?)
+             WHERE (recipes.title LIKE '%{query_word}%' OR recipes.description_r LIKE '%{query_word}%')
+             AND ('{query_class}' = '' OR recipe_classes.title = '{query_class}')
              ORDER BY recipes.id DESC"""
-    like = "%" + query_word + "%"
-    return db.query(sql, [like, like, query_class, query_class])
+    return db.query(sql)
+
+    # FIX for A03: 
+    # replace the unsafe SQL above with this query (parameterized)
+    
+    # sql = """SELECT DISTINCT recipes.id, recipes.title,
+    #          users.id AS user_id, users.username
+    #          FROM recipes
+    #          JOIN users ON recipes.user_id = users.id
+    #          LEFT JOIN recipe_classes ON recipe_classes.recipe_id = recipes.id
+    #          WHERE (recipes.title LIKE ? OR recipes.description_r LIKE ?)
+    #          AND (? = '' OR recipe_classes.title = ?)
+    #          ORDER BY recipes.id DESC"""
+    # like = "%" + query_word + "%"
+    # return db.query(sql, [like, like, query_class, query_class])
+
 
 def add_review(rating_review, text_review, user_id, recipe_id):
     sql = """INSERT INTO reviews (rating_review, text_review, user_id, recipe_id)
