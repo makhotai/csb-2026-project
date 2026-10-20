@@ -307,8 +307,20 @@ def create():
     if not re.search(r'^\S+$', username):
         abort(403)
     password1 = request.form["password1"]
+
+    # A07 identification and authentication failures:
+    # accepts very weak and short passwords (e.g. "1234")
+
     if not password1 or len(password1) > 16 or len(password1) < 4:
         abort(403)
+
+    # FIX: 
+    # comment out the weak check above and uncomment this block
+    
+    # if not password1 or len(password1) > 16 or len(password1) < 8:
+    #     flash("Password must contain 8-16 characters.")
+    #     return redirect("/register")
+
     if not re.search(r'^\S+$', password1):
         abort(403)
     password2 = request.form["password2"]
