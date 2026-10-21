@@ -230,9 +230,17 @@ def remove_recipe(recipe_id):
         return render_template("remove_recipe.html", recipe=recipe)
 
     if request.method == "POST":
+
+        # CSRF flaw:
+        # the server does not validate the CSRF token before performing the delete operation
+
+        # FIX for CSRF:
+        # check_csrf()
+
         if "remove" in request.form:
             recipes.remove_recipe(recipe_id)
             return redirect("/")
+
         return redirect("/recipe/" + str(recipe_id))
 
 @app.route("/add_image", methods=["POST"])

