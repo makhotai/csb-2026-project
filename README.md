@@ -49,3 +49,10 @@ Repository does not include `database.db` so you need to create and initialize d
 sqlite3 database.db < schema.sql
 sqlite3 database.db < init.sql
 ```
+
+## Running the app
+
+You can run the application with:
+```
+flask run -p 5000
+```
