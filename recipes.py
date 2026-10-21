@@ -72,7 +72,7 @@ def remove_recipe(recipe_id):
     db.execute(sql, [recipe_id])
 
 def find_recipes(query_word, query_class):
-    # A03 — injection: 
+    # A03 injection: 
     # user input is inserted directly into the SQL statement 
 
     # this search term can change the WHERE part and 
@@ -88,7 +88,7 @@ def find_recipes(query_word, query_class):
              ORDER BY recipes.id DESC"""
     return db.query(sql)
 
-    # FIX for A03: 
+    # FIX (A03): 
     # replace the unsafe SQL above with this query (parameterized)
     
     # sql = """SELECT DISTINCT recipes.id, recipes.title,

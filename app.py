@@ -161,7 +161,8 @@ def edit_recipe(recipe_id):
 
     # A01 broken access control:
     # there is no ownership so another logged in user can open this edit form directly
-    # FIX:
+
+    # FIX(A01):
     # if recipe["user_id"] != session["user_id"]:
     #     abort(403)
 
@@ -183,7 +184,8 @@ def update_recipe():
 
     # A01 broken access control:
     # the backend does not verify that the logged in user owns this recipe before updating it
-    # FIX:
+
+    # FIX (A01):
     # if recipe["user_id"] != session["user_id"]:
     #    abort(403)
 
@@ -314,7 +316,7 @@ def create():
     if not password1 or len(password1) > 16 or len(password1) < 4:
         abort(403)
 
-    # FIX: 
+    # FIX (A07): 
     # comment out the weak check above and uncomment this block
     
     # if not password1 or len(password1) > 16 or len(password1) < 8:
